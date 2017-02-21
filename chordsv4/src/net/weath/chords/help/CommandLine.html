@@ -1,0 +1,42 @@
+Command line: 
+<pre>java -jar Chords.jar [flags]... [xmlFile]</pre>
+The following flags are recognized:
+<pre>
+  -help
+  -s
+  dumpProps=&lt;path&gt;
+  soundbank=&lt;path&gt;
+  instrument=&lt;bank&gt;,&lt;program&gt;
+  delay=&lt;milliseconds&gt;
+  props=&lt;path&gt;
+</pre>
+<p>The "-s" flag makes the display "small" by omitting the keyboard,
+staff, chord-name, and note-detail panels. This may be useful when
+playing back MusicXML files, to reduce the required screen space.
+</p>
+<p>Use "dumpProps=file" to cause the program to dump the properties to
+a file so you can edit them, then run with "props=file" to use your
+edited properties.  This file includes the definitions and tunings
+for all the chords known to this program.  You can modify the chord list
+and add new chord names, but you can't add new syntax.  The parser doesn't
+grok "alt", for example, and adding it to the chord list won't fix that.
+</p>
+<p>
+The "soundbank" option allows you to override the default location of the
+MIDI soundbank file. If not specified, the program looks in 
+</p>
+<pre>
+   {java.home}/lib/audio/soundbank.gm
+</pre>
+<p>
+The "instrument" option sets the initial MIDI instrument, in terms of
+bank number and program number. This info is listed after each instrument
+name in the Instrument submenu of the File menu.
+</p>
+<p>
+The "delay" option specifies the number of milliseconds that the program
+inserts between the start of the notes of a chord, giving an arpeggio-like
+effect. It defaults to 250 (one quarter of a second). If you prefer no
+delay, use "delay=0" on the command line, or modify the props file as
+described above to change the default.
+</p>

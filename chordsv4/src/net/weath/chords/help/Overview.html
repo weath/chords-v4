@@ -1,0 +1,109 @@
+<p>This program displays and plays chords. You can
+specify the
+chord</p>
+<ul>
+<li> by entering its symbol</li>
+<li> by selecting the root, type, and
+inversion from the menus</li>
+<li> by entering the notes of the chord as
+note names or via the keyboard, or</li>
+<li>by opening a MusicXML file and
+stepping through it, chord by chord.</li>
+</ul>
+<p>In addition, you can select any MIDI instrument known to your
+system (in your <i>java.home</i><span style="font-family: monospace;">/lib/audio/soundbank.gm</span>
+file) to
+play the notes, you can hear them in Equal Temperament or
+Just Intonation, and you can tweak the tuning of each note
+(in JI mode) by entering a set of integers (the frequency ratios)
+or by specifying adjustments to each pitch (in cents (100ths of a
+half-step)).
+</p>
+<p>See the "Syntax" help topic for the details of how to specify
+these
+values.
+</p>
+<p>The keyboard panel highlights the notes of the chord in red.
+Clicking
+on an already-highlighted key cycles through the enharmonic spellings
+(Db, C#, Bx) for that key. Shift-click to remove a note from
+the chord.
+</p>
+<p>Just above the keyboard, each note will be labeled with its
+function in
+the chord (R, M3, P5, etc.) as well as the integer corresponding to the
+frequency of that pitch (4:5:6 for a major triad), if in JI mode.
+</p>
+<p>The main panel will also display the notes of the selected
+chord on
+a grand staff. In JI mode, the staff notes will be colored
+red (sharp) or
+blue (flat) according to the pitch adjustments relative to the ET
+pitch.
+Hover over a note with the mouse to see its MIDI note number, any pitch
+bend (in cents), and the resulting frequency (in Hz).
+</p>
+<p>The right half of the main panel lists alternative
+interpretations for
+the given chord. Clicking on a chord name in that panel will
+enter the
+symbol and inversion into the Symbol field and display the resulting
+notes.
+</p>
+<p>
+The lower part of the right half of the main panel gives the details
+of the notes which make up the chord.  For each note, it shows the
+part and voice (or just a number, if not from a MusicXML file), then
+the note name and octave, the cents flat or sharp, the interval relative
+to the root, the factor in the ratio set (if in JI mode), and a small
+graph which indicates the frequency relative to ET. The range of the
+graph is plus or minus 50 cents (one quarter tone sharp or flat).
+</p>
+<p>Use the &lt; and &gt; buttons at the bottom right of the main window
+to scroll through the
+available MIDI
+instruments, or select an instrument directly using the
+File-&gt;Instrument
+menu. I recommend the Flute sound (bank 0, program 73 on my
+system)
+for the purest tones.
+</p>
+<p>The Tick field (upper right) displays the current position in the selected
+MusicXML
+file
+(if any) in terms of measure, beat, and tick. You can enter a
+position
+in the file as a set of three integers (M:B:T), or as a single integer
+(ticks from the start of the file). The "tick" value
+corresponds to the length of the
+smallest time division (shortest note or rest) used in the file, normally.
+The &lt; and &gt; buttons to the left and right of the Tick field step
+through the sequence one chord at a time.
+</p>
+<p>
+You can play a MusicXML file at any desired tempo. The Play button starts
+the playback from the current Tick location. The Stop button stops playback
+immediately.
+The Tempo field gives the number of quarter notes per minute (approximately)
+for the playback.
+</p>
+<p>If a given chord type has multiple tunings in the database
+(such as m7),
+then entering a "2", for example, in the "Tuning:" text field will
+select the alternate tuning.
+<p>
+The "Tune to" field accepts a sequence of voice numbers and tick values that
+causes the program to select the given voice at the given tick as the
+voice that the chord is tuned to. If this is blank, the chords are tuned
+to the lowest note in the chord, usually the bass voice. Most barbershop
+songs sound best when tuned to the melody, normally in the lead voice.
+For passages where the melody is in another voice, add the start tick
+and new voice to the "Tune to" field.  For example:
+<pre>
+  (0/2) 7:1:0 (1/2)
+</pre>
+<p>
+This says "tune to voice (0/2), a common designation for the lead voice, from
+the start of the song until measure 7, beat 1; then tune to voice (1/2), a
+common designation for the bass voice, until the end of the song."
+</p>

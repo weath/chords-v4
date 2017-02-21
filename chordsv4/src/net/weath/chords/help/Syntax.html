@@ -1,0 +1,119 @@
+<h2>Chord symbol:</h2>
+<pre>
+  C
+  Ab sus
+  F7#9
+  Gm7/C
+  Bb 9 (2nd inversion)
+  <i>etc.</i>
+</pre>
+  
+<p>
+Recognized types:
+</p>
+<pre>
+   m mi min - M ma maj major aug + dim o O 5
+</pre>
+<p>
+Recognized modifiers:
+</p>
+<pre>
+   no3 b5 #5 -5 +5 no5 6 7 -maj7 maj7 M7
+   9 M9 maj9 -maj9 b9 -9 #9 +9 b10 -10 11 M11 maj11 -maj11
+   #11 no11 13 maj13 b13 sus sus2 sus4 add2 add4 add6 add9
+   2 /2 4 /4 /6 /7 /9 /11 /13
+</pre>
+
+<p>
+Recognized inversions:
+</p>
+
+<pre>
+   1st 2nd 3rd 4th 5th 6th 7th 8th 9th
+   10th 11th 12th
+</pre>
+
+<h2>Notes:</h2>
+<p>
+  A sequence of note names (bottom to top), with optional
+  octave number (C5 is middle C) and optional tuning (in cents):
+</p>
+<pre>
+    C Eb G
+    C3 Eb5-12 G
+</pre>
+<p>
+  Also accepts a bare integer to set the octave, and
+  an underscore to skip at least an octave between notes:
+</p>
+<pre>
+    2 C _ G _ E
+</pre>
+
+
+<h2>Tune to:</h2>
+<p>
+  A sequence of space-separated items.  Each item is either a
+  note specifier (see below), or a time specifier (likewise).
+  A time specifier applies to the note specifier that follows it.
+</p>
+  
+<p>
+  <b>Note Specifier:</b>
+</p>
+<p>
+    A <b>Part and Voice number</b>, in parentheses, separated by a slash.
+    For example: (0/1) is the first voice in the first part, usually
+    Tenor for barbershop tunes.  Parts are numbered from 0, voices
+    from 1. This causes the chord to be tuned to the note being sung
+    by the given voice part, and that note to be tuned relative to the
+    key of the current measure.
+</p><p>
+    A <b>Note name</b>, like C or Eb or F#, to specify that the chord be
+    tuned so that the given note has zero pitch bend (i.e., has the E.T.
+    frequency).
+</p><p>
+    A <b>cents value</b>, a decimal number preceded by a plus or minus, to
+    tune the chord root up or down the given number of cents.
+</p><p>
+    Or, both a note name and cents value, to tune the chord to the given
+    note, plus or minus the given number of cents.
+</p>
+<p>
+	If no tuning spec is given, each chord's root is tuned to the E.T. scale.
+</p>
+<p>
+  <b>Time Specifier:</b>
+</p>
+<p>
+    A <b>Measure, Beat, and Tick</b> value, separated by colons.
+    Example: 1:1:0 is the first beat of the first measure, with no tick offset.
+    2:1:4 would be four ticks after the first beat of the second measure.
+</p>
+<p>
+<b>Example:</b>
+</p>
+<pre>
+	(0/2) 5:1:0 (1/2) 6:3:0 Ab-12.6 7:1:0 (0/2)
+</pre>
+<p>
+The spec above says to tune to the Lead (voice 2 of part 0) from the beginning of
+the piece until beat 1 of measure 5. That chord, and all chords up until (but not
+including) the one at beat 3 of measure 6, should tune to the Bass note (voice 2 of
+part 1). The chord at beat 3 of measure 6 should be tuned such that the Ab (there
+<i>must</i> be an Ab in the chord!) is 12.6 cents flatter than an E.T. Ab. Starting
+with beat 1 of measure 7, going to the end of the piece, tune to the Lead again.
+Tuning to a given voice part implies that the note sung by that voice part should
+be tuned relative to the current key, and the rest of the chord should then be tuned
+relative to that note.
+</p>
+
+<h2>Ratios:</h2>
+<p>
+  A set of integers, one per note in the chord, specifying the
+  ratios of the frequencies in the chord. Separated by spaces
+  or colons.
+</p>
+<pre>
+    4:5:6:7  (a "Barbershop" seventh chord in close position, like C E G Bb)
+</pre>
