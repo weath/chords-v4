@@ -12,6 +12,7 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.event.MouseInputAdapter;
 
 import net.weath.musicutil.Accidental;
 import net.weath.musicutil.AccidentalKind;
@@ -29,6 +30,8 @@ public class MainCanvas extends JPanel implements ChordChangeListener {
     private static final long serialVersionUID = 1L;
 
     BufferedImage bracketImage;
+    
+    private Note[] notes;
 
     /**
      * the Accidental for each pitch in "pitches"
@@ -63,6 +66,8 @@ public class MainCanvas extends JPanel implements ChordChangeListener {
     
     private boolean just;
 
+	private ChordModel model;
+
     /**
      * the X value of the upper left corner of the staff
      */
@@ -73,9 +78,13 @@ public class MainCanvas extends JPanel implements ChordChangeListener {
      */
     private static final int yBase = 180;
 
-    public MainCanvas(Font maestro) {
+    public MainCanvas(Font maestro, ChordModel model) {
         this.maestro = maestro;
+        this.model = model;
         loadBracketImage();
+		MyMouseListener l = new MyMouseListener();
+		addMouseMotionListener(l);
+		addMouseListener(l);
     }
 
     private void loadBracketImage() {
@@ -194,18 +203,12 @@ public class MainCanvas extends JPanel implements ChordChangeListener {
         int x = event.getX();
         int y = event.getY();
 
-        String s = null;
-
-        for (int i = 0; i < notey.length; i++) {
-            int ny = notey[i];
-            if (Math.abs(y - ny) < 3) {
-                int nx = centerX + noteoffsets[i] + 5;
-                if (Math.abs(x - nx) < 5) {
-                    s = pitches[i].toString();
-                    break;
-                }
-            }
-        }
+		int n = getNoteIndex(x, y);
+		
+		if (n < 0)
+			return null;
+		
+		String s = pitches[n].toString();
 
         return s;
     }
@@ -277,4 +280,109 @@ public class MainCanvas extends JPanel implements ChordChangeListener {
             return orig;
         }
     }
+    
+	private int getNoteIndex(int x, int y) {
+		for (int i = 0; i < notey.length; i++) {
+			int ny = notey[i];
+			if (Math.abs(y - ny) < 3) {
+				int nx = centerX + noteoffsets[i] + 5;
+				if (Math.abs(x - nx) < 5) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	public int whichNote(int x, int y) {
+		int n = getNoteIndex(x, y);
+		//System.out.println("note = " + n + ", " + ((n >= 0) ? pitches[n].toString() : "<none>"));
+		return n;
+	}
+
+	private Note[] clone(Note[] noteArr) {
+		if (noteArr == null)
+			return new Note[0];
+		Note[] n = new Note[noteArr.length];
+		System.arraycopy(noteArr, 0, n, 0, noteArr.length);
+		return n;
+	}
+
+	class MyMouseListener extends MouseInputAdapter {
+		private int x;
+		private int y;
+		private int note;
+		private int originalMod;
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			x = e.getX();
+			y = e.getY();
+			note = whichNote(x, y);
+			if (note > 0) {
+				Pitch p = pitches[note];
+				Note n = p.getNote();
+				AccidentalKind a = (n == null) ? null : n.getAccidentalKind();
+				originalMod = (a == null) ? 0 : a.modifier();
+			} else {
+				originalMod = 0;
+			}
+		}
+		
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			if (note < 0 || pitches == null || pitches.length < note)
+				return;
+			pitches[note] = new Pitch(notes[note], pitches[note].getOctave());
+			noteArr = MainCanvas.this.clone(notes);
+			x = y = -1;
+			note = -1;
+			model.setPitches(Origin.Main, pitches);
+		}
+		
+		/*
+		 * Define an imaginary ruler, 100 pixels long, with 5 20-pixel-wide zones. The 5 zones
+		 * represent the 5 possible modifiers, left to right: bb, b, nat, #, x
+		 * Whatever the original accidental is, center that zone over the original location. Require
+		 * movement of the mouse into an adjacent zone before changing the applied accidental.
+		 * 
+		 * 		-50        -30			-10				10			30				50
+		 * 		 |	  bb	 |		b	 |		nat		|	  #		|		x		|
+		 * 
+		 * (non-Javadoc)
+		 * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
+		 */
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			int deltaX = e.getX() - x;
+			if (note < 0)
+				return;
+			Pitch p = pitches[note];
+			Note n = p.getNote();
+			AccidentalKind curAcc = n.getAccidentalKind();
+			int m = originalMod;
+			// which modifier was applied to note initially? place the center of its
+			// section of the ruler at the original mouse position
+			int center = m * 20; // one of [ -40, -20, 0, 20, 40 ]
+			int r = center + deltaX; // convert to ruler-relative coord
+			int d = (r + 9) / 20; // how many slices did the mouse move from the center?
+			//System.out.println("deltaX = " + deltaX + ", m = " + m + ", d = " + d);
+			if (m + d <= 2 && m + d >= -2) {
+				m += d;
+				AccidentalKind a = AccidentalKind.forModifier(m);
+				if (a != curAcc) {
+					n = n.apply(a);
+					//System.out.println("Original = " + p + ", new = " + n);
+					notes = new Note[noteArr.length];
+					System.arraycopy(noteArr, 0, notes, 0, noteArr.length);
+					notes[note] = n;
+					Pitch[] newPitches = new Pitch[model.getPitches().length];
+					System.arraycopy(model.getPitches(), 0, newPitches, 0, newPitches.length);
+					newPitches[note] = new Pitch(notes[note], newPitches[note].getOctave());
+					model.setPitches(Origin.Main, newPitches);
+				}
+			}
+		}
+	}
+
 }

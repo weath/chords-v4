@@ -287,121 +287,121 @@ public class ChordModel {
      * set the pitch bend values for the pitches
      */
     private void setPitchBends() {
-//        if (instances.length == 0) {
-//            return;
-//        }
-//        int sel = getSelection();
-//        if (sel < 0) {
-//            sel = 0;
-//        }
-//        ChordInstance instance = instances[sel];
-//        Chord chord = instance.getChord();
-//        if (chord == null) {
-//            return;
-//        }
-//        if (just) {
-//            Chord rootPosition = chord.getInversion(0);
-//            RatioSet rs = rootPosition.getRatios();
-//            setRatios(rootPosition, rs);
-//            TuningSpec spec = getTuningSpec();
-//            if (spec != null) {
-//                int delta = 0;
-//                VoicePart vp = spec.getVoicePart();
-//                if (vp != null) {
-//                    // choose the note being sung by the given VoicePart at the current tick
-//                    int pb = 0;
-//                    Note note = null;
-//                    if (vp.voice == 0) { // not a true part/voice, just a note number
-//                        Pitch p = null;
-//                        if (vp.part < pitches.length) {
-//                            p = pitches[vp.part];
-//                            note = p.getNote();
-//                            pb = p.getPitchBend();
-//                            System.err.println("Tuning to " + note);
-//                        }
-//                    } else {
-//                        for (Pitch p : pitches) {
-//                            if (vp.equals(p.getVoicePart())) {
-//                                pb = p.getPitchBend();
-//                                note = p.getNote();
-//                                System.err.println("Tuning to " + note);
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    if (note != null) {
-//                        // compute desired pitchbend based on current key
-//                        delta = getDelta(note, pb);
-//                    } else {
-//                        // note to tune to was not found; tune to the key
-//                        // first, pick a note; if lead is singing, use that
-//                        Pitch pitch = null;
-//                        for (Pitch p : pitches) {
-//                            vp = (VoicePart) p.getVoicePart();
-//                            if (vp != null && vp.part == 0 && vp.voice == 2) {
-//                                pitch = p;
-//                                break;
-//                            }
-//                        }
-//                        if (pitch == null) {
-//                            // next, if bass is singing, use that note
-//                            for (Pitch p : pitches) {
-//                                vp = (VoicePart) p.getVoicePart();
-//                                if (vp != null && vp.part == 1 && vp.voice == 2) {
-//                                    pitch = p;
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        if (pitch == null) {
-//                            // just pick the lowest (first) pitch
-//                            if (pitches != null && pitches.length > 0) {
-//                                pitch = pitches[0];
-//                            }
-//                        }
-//                        if (pitch != null) {
-//                            delta = getDelta(pitch.getNote(), pitch.getPitchBend());
-//                        }
-//                    }
-//                } else {
-//                    // not a VoicePart; must be a Note or just cents
-//                    Note note = spec.getNote();
-//                    if (note == null) {
-//                        // just a cents value; tune the root relative to E.T.
-//                        Note root = instance.getRoot();
-//                        for (Pitch p : pitches) {
-//                            if (p.getNote().equals(root)) {
-//                                delta = spec.getPitchBend();
-//                                delta += p.getPitchBend();
-//                                break;
-//                            }
-//                        }
-//                    } else {
-//                        // find the note in the chord
-//                        boolean found = false;
-//                        for (Pitch p : pitches) {
-//                            if (p.getNote().equals(note)) {
-//                                delta = getDelta(p.getNote(), p.getPitchBend());
-//                                delta += spec.getPitchBend();
-//                                found = true;
-//                                break;
-//                            }
-//                        }
-//                        if (!found) {
-//                            errMsg.setErrMsg("unable to locate " + note + " in chord!");
-//                        }
-//                    }
-//                }
-//                System.err.println("Delta = " + delta);
-//                for (Pitch p : pitches) {
-//                    p.addBend(delta);
-//                }
-//            }
-//        } else {
-//            for (Pitch p : pitches) {
-//                p.setBend(0);
-//            }
-//        }
+        if (instances.length == 0) {
+            return;
+        }
+        int sel = getSelection();
+        if (sel < 0) {
+            sel = 0;
+        }
+        ChordInstance instance = instances[sel];
+        Chord chord = instance.getChord();
+        if (chord == null) {
+            return;
+        }
+        if (just) {
+            Chord rootPosition = chord;
+            RatioSet rs = rootPosition.getRatios();
+            setRatios(rootPosition, rs);
+            TuningSpec spec = getTuningSpec();
+            if (spec != null) {
+                int delta = 0;
+                VoicePart vp = spec.getVoicePart();
+                if (vp != null) {
+                    // choose the note being sung by the given VoicePart at the current tick
+                    int pb = 0;
+                    Note note = null;
+                    if (vp.voice == 0) { // not a true part/voice, just a note number
+                        Pitch p = null;
+                        if (vp.part < pitches.length) {
+                            p = pitches[vp.part];
+                            note = p.getNote();
+                            pb = p.getPitchBend();
+                            System.err.println("Tuning to " + note);
+                        }
+                    } else {
+                        for (Pitch p : pitches) {
+                            if (vp.equals(p.getVoicePart())) {
+                                pb = p.getPitchBend();
+                                note = p.getNote();
+                                System.err.println("Tuning to " + note);
+                                break;
+                            }
+                        }
+                    }
+                    if (note != null) {
+                        // compute desired pitchbend based on current key
+                        delta = getDelta(note, pb);
+                    } else {
+                        // note to tune to was not found; tune to the key
+                        // first, pick a note; if lead is singing, use that
+                        Pitch pitch = null;
+                        for (Pitch p : pitches) {
+                            vp = (VoicePart) p.getVoicePart();
+                            if (vp != null && vp.part == 0 && vp.voice == 2) {
+                                pitch = p;
+                                break;
+                            }
+                        }
+                        if (pitch == null) {
+                            // next, if bass is singing, use that note
+                            for (Pitch p : pitches) {
+                                vp = (VoicePart) p.getVoicePart();
+                                if (vp != null && vp.part == 1 && vp.voice == 2) {
+                                    pitch = p;
+                                    break;
+                                }
+                            }
+                        }
+                        if (pitch == null) {
+                            // just pick the lowest (first) pitch
+                            if (pitches != null && pitches.length > 0) {
+                                pitch = pitches[0];
+                            }
+                        }
+                        if (pitch != null) {
+                            delta = getDelta(pitch.getNote(), pitch.getPitchBend());
+                        }
+                    }
+                } else {
+                    // not a VoicePart; must be a Note or just cents
+                    Note note = spec.getNote();
+                    if (note == null) {
+                        // just a cents value; tune the root relative to E.T.
+                        Note root = instance.getRoot();
+                        for (Pitch p : pitches) {
+                            if (p.getNote().equals(root)) {
+                                delta = spec.getPitchBend();
+                                delta += p.getPitchBend();
+                                break;
+                            }
+                        }
+                    } else {
+                        // find the note in the chord
+                        boolean found = false;
+                        for (Pitch p : pitches) {
+                            if (p.getNote().equals(note)) {
+                                delta = getDelta(p.getNote(), p.getPitchBend());
+                                delta += spec.getPitchBend();
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            errMsg.setErrMsg("unable to locate " + note + " in chord!");
+                        }
+                    }
+                }
+                System.err.println("Delta = " + delta);
+                for (Pitch p : pitches) {
+                    p.addBend(delta);
+                }
+            }
+        } else {
+            for (Pitch p : pitches) {
+                p.setBend(0);
+            }
+        }
     }
 
     private TuningSpec getTuningSpec() {

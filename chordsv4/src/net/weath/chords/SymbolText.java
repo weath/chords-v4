@@ -1,7 +1,6 @@
 package net.weath.chords;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 
@@ -11,8 +10,6 @@ import net.weath.musicutil.Note;
 public class SymbolText extends JTextField implements IChordController, IChordViewer {
 
     private static final long serialVersionUID = 1L;
-
-    @SuppressWarnings("unused")
 
     private final ChordSymbolParser symParser;
 

@@ -21,9 +21,10 @@ import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +57,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 import net.weath.musicutil.AccidentalKind;
@@ -77,7 +77,7 @@ import net.weath.musicxml.VoicePart;
  *
  * @author weath@weath.net
  *
- * Originally created 29 April 2007 Current version 15 February 2012
+ * Originally created 29 April 2007 Current version 20 February 2017
  */
 public class Chords {
 
@@ -180,6 +180,8 @@ public class Chords {
     private JButton play;
     private JButton stop;
 
+	private JLabel tempoLabel;
+
     public Chords(String[] args) {
         frame = new JFrame("Chords");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -245,6 +247,17 @@ public class Chords {
             System.err.println("tuneTo = " + getTuneTo().getText());
             parseTuneTo();
         });
+        getTuneTo().addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusGained(FocusEvent arg0) {
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				System.err.println("tuneTo = " + getTuneTo().getText());
+				parseTuneTo();
+			}});
 
         setRatiosLabel(new JLabel("   Ratios:"));
         getRatiosLabel().setFont(getDefaultFont());
@@ -278,12 +291,13 @@ public class Chords {
             Object value = getTempo().getValue();
             setTempo((Integer) value);
         });
-        lab = new JLabel("Tempo:");
-        lab.setFont(getDefaultFont());
-        panel2.add(lab);
+        tempoLabel = new JLabel("Tempo:");
+        tempoLabel.setFont(getDefaultFont());
+        panel2.add(tempoLabel);
         getTempo().setToolTipText("Enter the tempo (in quarter notes per minute) for playback");
         getTempo().setValue(60);
         getTempo().setEnabled(false);
+        tempoLabel.setEnabled(false);
         panel2.add(getTempo());
 
         setEqualTemp(new JRadioButton("E.T."));
@@ -313,7 +327,7 @@ public class Chords {
         panel.setLayout(new BorderLayout());
         JPanel subPanel = new JPanel();
         subPanel.setLayout(gridLayout);
-        setCanvas(new MainCanvas(getMaestro()));
+        setCanvas(new MainCanvas(getMaestro(), model));
         getModel().addListener(getCanvas());
         subPanel.add(getCanvas());
         JPanel rightPanel = new JPanel();
@@ -492,7 +506,7 @@ public class Chords {
             getPlayer().setTick(getTickField().getText());
         });
         getPlayer().setTickField(getTickField());
-        getPlayer().setTempoSpinner(getTempo());
+//        getPlayer().setTempoSpinner(getTempo());
         getTickField().setToolTipText("Enter a playback position as Measure : Beat : Tick");
         getForw().setToolTipText("Next chord in the sequence");
         getBack().setToolTipText("Previous chord in the sequence");
@@ -500,7 +514,9 @@ public class Chords {
 
     private class MyMenu extends JMenu {
 
-        private MyMenu(String str) {
+		private static final long serialVersionUID = 1L;
+
+		private MyMenu(String str) {
             super(str);
             setFont(getDefaultFont());
         }
@@ -509,7 +525,9 @@ public class Chords {
 
     private class MyMenuItem extends JMenuItem {
 
-        private MyMenuItem(String str) {
+		private static final long serialVersionUID = 1L;
+
+		private MyMenuItem(String str) {
             super(str);
             setFont(getDefaultFont());
         }
@@ -996,6 +1014,7 @@ public class Chords {
             getPlay().setEnabled(true);
             getStop().setEnabled(true);
             getTempo().setEnabled(true);
+            tempoLabel.setEnabled(true);
         }
     }
 

@@ -406,10 +406,10 @@ public class Pitch implements Comparable<Pitch> {
             return this; // no-op
         }
         Note[] aliases = note.getAliases();
-        boolean found = false;
+//        boolean found = false;
         for (Note nn : aliases) {
             if (nn.equals(n)) {
-                found = true;
+//                found = true;
                 break;
             }
         }

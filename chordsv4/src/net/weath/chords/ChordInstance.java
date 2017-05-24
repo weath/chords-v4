@@ -50,7 +50,7 @@ public class ChordInstance {
         }
         pitches = pArr;
         int[] factor = new int[pArr.length];
-        Note bass = pArr[0].getNote();
+//        Note bass = pArr[0].getNote();
         Pitch[] chordPitches = chord.getPitches(root, pArr[0].getOctave());
         if (chord instanceof RootlessChord) {
             RootlessChord rc = (RootlessChord) chord;

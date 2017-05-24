@@ -1,11 +1,9 @@
 package net.weath.chords;
 
-import java.util.ArrayList;
 import net.weath.musicutil.Chord;
 import net.weath.musicutil.Note;
 import net.weath.musicutil.Pitch;
 import net.weath.musicutil.RatioSet;
-import net.weath.musicutil.RootlessChord;
 
 public class ChordChangeEvent {
 
@@ -40,9 +38,9 @@ public class ChordChangeEvent {
     }
 
     public Pitch[] getPitches() {
-        if (selection >= 0 && selection < instances.length) {
-            pitches = instances[selection].getPitches();
-        }
+//        if (selection >= 0 && selection < instances.length) {
+//            pitches = instances[selection].getPitches();
+//        }
         return pitches;
     }
 

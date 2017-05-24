@@ -2,7 +2,6 @@ package net.weath.chords;
 
 import java.util.HashMap;
 
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import net.weath.musicutil.ChordSeq;
@@ -25,7 +24,7 @@ public class SequencePlayer implements IChordController {
 
     private JTextField tickField;
 
-    private JSpinner tempoSpinner;
+//    private JSpinner tempoSpinner;
 
     private MeasureMap measureMap;
 
@@ -200,9 +199,9 @@ public class SequencePlayer implements IChordController {
         this.tickField = tickField;
     }
 
-    public void setTempoSpinner(JSpinner tempoSpinner) {
-        this.tempoSpinner = tempoSpinner;
-    }
+//    public void setTempoSpinner(JSpinner tempoSpinner) {
+//        this.tempoSpinner = tempoSpinner;
+//    }
 
     public void setMeasureMap(MeasureMap measureMap) {
         this.measureMap = measureMap;

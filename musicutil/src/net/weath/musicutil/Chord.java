@@ -572,7 +572,8 @@ public class Chord implements Comparable<Object> {
         return "???";
     }
 
-    private static String rootlessIntervals(String baseName) {
+    @SuppressWarnings("unused")
+	private static String rootlessIntervals(String baseName) {
         switch (baseName) {
             case "maj7": // m9
                 return "m3 P5 m7 M9";

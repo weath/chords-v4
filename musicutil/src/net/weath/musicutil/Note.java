@@ -772,6 +772,8 @@ public class Note {
      */
     public Note apply(AccidentalKind ak) {
         Note n = this.natural();
+        if (ak == null)
+        	return n;
         int delta = ak.modifier();
         while (delta < 0) {
             n = n.flatten();

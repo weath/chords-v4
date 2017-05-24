@@ -49,6 +49,10 @@ public enum AccidentalKind {
             case doubleSharp:
                 m = "\uF0DC";
                 break;
+		case natural:
+			break;
+		default:
+			break;
         }
         return m;
     }

@@ -108,7 +108,7 @@ public class RootlessChord extends Chord {
         }
         // find the 3rd and ninth
         int third = -1;
-        int ninth = -1;
+//        int ninth = -1;
         for (int i = 0; i < pitches.length - 1; i++) {
             Pitch p1 = pitches[i];
             for (int j = i + 1; j < pitches.length; j++) {
@@ -120,13 +120,13 @@ public class RootlessChord extends Chord {
                         || n.isEquivalentTo(Interval.M2)) {
                     if (n.semitones() <= 2) { // m2 or M2
                         third = j;
-                        ninth = i;
+//                        ninth = i;
                     } else if (n.semitones() > 12 && n.semitones() < 15) { // M9
                         third = j;
-                        ninth = i;
+//                        ninth = i;
                     } else { // m7 or M7
                         third = i;
-                        ninth = j;
+//                        ninth = j;
                     }
                     break;
                 }
